@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { HydratedDocument } from 'mongoose'
 
 @Schema({
   collection: 'todos',
@@ -8,17 +8,17 @@ import { HydratedDocument } from 'mongoose';
 export class TodoEntity {
   /** Firebase UID of the owner. */
   @Prop({ required: true, index: true })
-  user_id: string;
+  user_id: string
 
   @Prop({ required: true, trim: true })
-  title: string;
+  title: string
 
   @Prop({ default: false })
-  is_completed: boolean;
+  is_completed: boolean
 
-  created_at: Date;
-  updated_at: Date;
+  created_at: Date
+  updated_at: Date
 }
 
-export type TodoDocument = HydratedDocument<TodoEntity>;
-export const TodoSchema = SchemaFactory.createForClass(TodoEntity);
+export type TodoDocument = HydratedDocument<TodoEntity>
+export const TodoSchema = SchemaFactory.createForClass(TodoEntity)

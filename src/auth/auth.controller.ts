@@ -10,21 +10,21 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { DecodedIdToken } from 'firebase-admin/auth';
+} from '@nestjs/common'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import type { DecodedIdToken } from 'firebase-admin/auth'
 import {
   ApiErrorResponses,
   ApiOkResponseOf,
-} from '@/common/api-response.decorator.js';
-import { HttpExceptionFilter } from '@/common/http-exception.filter.js';
-import { ResponseMessage } from '@/common/response-message.decorator.js';
-import { ResponseInterceptor } from '@/common/response.interceptor.js';
-import { AuthMeResponse, AuthSignInResponse } from '@/auth/auth.model.js';
-import { AuthService } from '@/auth/auth.service.js';
-import { CurrentUser } from '@/auth/current-user.decorator.js';
-import { AuthSignInRequest } from '@/auth/dto/sign-in.dto.js';
-import { FirebaseAuthGuard } from '@/auth/firebase-auth.guard.js';
+} from '@/common/api-response.decorator.js'
+import { HttpExceptionFilter } from '@/common/http-exception.filter.js'
+import { ResponseMessage } from '@/common/response-message.decorator.js'
+import { ResponseInterceptor } from '@/common/response.interceptor.js'
+import { AuthMeResponse, AuthSignInResponse } from '@/auth/auth.model.js'
+import { AuthService } from '@/auth/auth.service.js'
+import { CurrentUser } from '@/auth/current-user.decorator.js'
+import { AuthSignInRequest } from '@/auth/dto/sign-in.dto.js'
+import { FirebaseAuthGuard } from '@/auth/firebase-auth.guard.js'
 
 @ApiTags('auth')
 @Controller('api/v1/auth')
@@ -49,7 +49,7 @@ export class AuthController {
   )
   @UsePipes(new ValidationPipe({ whitelist: true }))
   signIn(@Body() body: AuthSignInRequest): Promise<AuthSignInResponse> {
-    return this.authService.signIn(body.email, body.password);
+    return this.authService.signIn(body.email, body.password)
   }
 
   @Get('me')
@@ -64,6 +64,6 @@ export class AuthController {
   @ApiOkResponseOf(AuthMeResponse)
   @ApiErrorResponses({ status: 401, description: 'Unauthorized' })
   me(@CurrentUser() user: DecodedIdToken): AuthMeResponse {
-    return { uid: user.uid, claims: user };
+    return { uid: user.uid, claims: user }
   }
 }
