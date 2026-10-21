@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import type { App } from 'supertest/types.js';
-import { AppModule } from './../src/app.module.js';
-import { FIREBASE_AUTH } from './../src/firebase/firebase.module.js';
+import { AppModule } from '@/app.module.js';
+import { FIREBASE_AUTH } from '@/firebase/firebase.module.js';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication<App>;
