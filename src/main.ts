@@ -1,10 +1,25 @@
+import './env.js';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule, ObserveInstrument } from './app.module.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
-  await app.listen(process.env.PORT ?? 3000);
+
+  const config = new DocumentBuilder()
+    .setTitle('nestjs-firebase-auth-mongodb')
+    .setVersion('1.0')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'BearerAuth',
+    )
+    .build();
+  SwaggerModule.setup('api-docs', app, () =>
+    SwaggerModule.createDocument(app, config),
+  );
+
+  await app.listen(process.env.PORT ?? 8000);
 }
 await bootstrap();
