@@ -1,10 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ResponseWithoutBody {
-  @ApiProperty({ example: 200 })
-  code: number;
-
-  @ApiProperty({ example: 'OK' })
+  @ApiProperty({ example: 'Success' })
   message: string;
 }
 

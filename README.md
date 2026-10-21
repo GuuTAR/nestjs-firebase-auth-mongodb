@@ -12,6 +12,8 @@ $ yarn
 
 | Variable | Required | Description |
 | --- | --- | --- |
+| `MONGODB_URI` | no | MongoDB connection string, default `mongodb://localhost:27017` |
+| `MONGODB_DB_NAME` | no | Database name, default `testdb` (overrides any database in `MONGODB_URI`) |
 | `FIREBASE_PROJECT_ID` | yes | Firebase project used to verify ID tokens |
 | `FIREBASE_API_KEY` | yes | Web API key, used by `POST /api/v1/auth/signin` |
 | `FIREBASE_CLIENT_EMAIL` / `FIREBASE_PRIVATE_KEY` | no | Service account; falls back to Application Default Credentials |

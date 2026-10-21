@@ -18,6 +18,7 @@ import {
   ApiOkResponseOf,
 } from '../common/api-response.decorator.js';
 import { HttpExceptionFilter } from '../common/http-exception.filter.js';
+import { ResponseMessage } from '../common/response-message.decorator.js';
 import { ResponseInterceptor } from '../common/response.interceptor.js';
 import { AuthMeResponse, AuthSignInResponse } from './auth.model.js';
 import { AuthService } from './auth.service.js';
@@ -39,6 +40,7 @@ export class AuthController {
     description:
       'Exchanges email + password for a Firebase ID token.\nUse the returned value as: Authorization: Bearer <token>',
   })
+  @ResponseMessage('Signed in successfully')
   @ApiOkResponseOf(AuthSignInResponse)
   @ApiErrorResponses(
     { status: 400, description: 'Bad Request' },
@@ -58,6 +60,7 @@ export class AuthController {
     description:
       'Returns the Firebase UID and claims of the authenticated caller.',
   })
+  @ResponseMessage('User retrieved successfully')
   @ApiOkResponseOf(AuthMeResponse)
   @ApiErrorResponses({ status: 401, description: 'Unauthorized' })
   me(@CurrentUser() user: DecodedIdToken): AuthMeResponse {
