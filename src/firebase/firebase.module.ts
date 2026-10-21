@@ -1,16 +1,16 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common'
 
-import { cert, getApps, initializeApp } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { getAuth } from 'firebase-admin/auth'
 
-export const FIREBASE_AUTH = Symbol('FIREBASE_AUTH');
+export const FIREBASE_AUTH = Symbol('FIREBASE_AUTH')
 
 function getFirebaseApp() {
-  const existing = getApps()[0];
-  if (existing) return existing;
+  const existing = getApps()[0]
+  if (existing) return existing
 
   const { FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY } =
-    process.env;
+    process.env
   // Verifying ID tokens only needs the project ID; a service account is used
   // when provided, otherwise Application Default Credentials.
   return initializeApp({
@@ -23,7 +23,7 @@ function getFirebaseApp() {
           privateKey: FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
         }),
       }),
-  });
+  })
 }
 
 @Global()

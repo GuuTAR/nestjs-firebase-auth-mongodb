@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from '@nestjs/common'
+import { MongooseModule } from '@nestjs/mongoose'
 
-import { AuthModule } from '@/auth/auth.module.js';
+import { AuthModule } from '@/auth/auth.module.js'
 
-import { TodoEntity, TodoSchema } from '@/todos/todo.schema.js';
-import { TodosController } from '@/todos/todos.controller.js';
-import { TodosService } from '@/todos/todos.service.js';
+import { TodoEntity, TodoSchema } from '@/todos/todo.schema.js'
+import { TodosController } from '@/todos/todos.controller.js'
+import { TodosService } from '@/todos/todos.service.js'
 
 @Module({
   imports: [

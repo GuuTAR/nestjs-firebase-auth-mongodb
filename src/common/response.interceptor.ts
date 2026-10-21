@@ -3,15 +3,15 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+} from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
 
-import type { Response as ExpressResponse } from 'express';
-import { STATUS_CODES } from 'node:http';
-import { Observable, map } from 'rxjs';
+import type { Response as ExpressResponse } from 'express'
+import { STATUS_CODES } from 'node:http'
+import { Observable, map } from 'rxjs'
 
-import { RESPONSE_MESSAGE } from '@/common/response-message.decorator.js';
-import { Response } from '@/common/response.model.js';
+import { RESPONSE_MESSAGE } from '@/common/response-message.decorator.js'
+import { Response } from '@/common/response.model.js'
 
 /**
  * Wraps handler results in the `{ code, message, body }` envelope. `message` comes
@@ -25,17 +25,17 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     ctx: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<Response<T>> {
-    const res = ctx.switchToHttp().getResponse<ExpressResponse>();
+    const res = ctx.switchToHttp().getResponse<ExpressResponse>()
     const message = this.reflector.getAllAndOverride<string | undefined>(
       RESPONSE_MESSAGE,
       [ctx.getHandler(), ctx.getClass()],
-    );
+    )
     return next.handle().pipe(
       map((body) => ({
         code: res.statusCode,
         message: message ?? STATUS_CODES[res.statusCode] ?? 'OK',
         body,
       })),
-    );
+    )
   }
 }
