@@ -7,6 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
+  app.enableCors({ origin: '*' });
 
   const config = new DocumentBuilder()
     .setTitle('nestjs-firebase-auth-mongodb')

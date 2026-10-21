@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AuthModule } from './auth/auth.module.js';
 import { FirebaseModule } from './firebase/firebase.module.js';
+import { TodosModule } from './todos/todos.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -17,8 +19,13 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       runtimeMetrics: !Boolean(process.versions?.['webcontainer']),
       serviceId: 'nest-typescript-starter',
     }),
+    MongooseModule.forRoot(
+      process.env.MONGODB_URI ?? 'mongodb://localhost:27017',
+      { dbName: process.env.MONGODB_DB_NAME ?? 'testdb' },
+    ),
     FirebaseModule,
     AuthModule,
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

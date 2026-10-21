@@ -9,35 +9,31 @@ import {
 import type { Response as ExpressResponse } from 'express';
 import { ResponseWithoutBody } from './response.model.js';
 
-/** Renders every error as a `{ code, message }` body. */
+/** Renders every error as a `{ message }` body with the matching HTTP status. */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
 
   catch(exception: unknown, host: ArgumentsHost) {
     const res = host.switchToHttp().getResponse<ExpressResponse>();
-    let payload: ResponseWithoutBody;
 
-    if (exception instanceof HttpException) {
-      const response = exception.getResponse();
-      const message =
-        typeof response === 'string'
-          ? response
-          : (response as { message?: string | string[] }).message;
-      payload = {
-        code: exception.getStatus(),
-        message: Array.isArray(message)
-          ? message.join(', ')
-          : (message ?? exception.message),
-      };
-    } else {
+    if (!(exception instanceof HttpException)) {
       this.logger.error(exception);
-      payload = {
-        code: HttpStatus.INTERNAL_SERVER_ERROR,
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: 'Internal Server Error',
-      };
+      } satisfies ResponseWithoutBody);
+      return;
     }
 
-    res.status(payload.code).json(payload);
+    const response = exception.getResponse();
+    const message =
+      typeof response === 'string'
+        ? response
+        : (response as { message?: string | string[] }).message;
+    res.status(exception.getStatus()).json({
+      message: Array.isArray(message)
+        ? message.join(', ')
+        : (message ?? exception.message),
+    } satisfies ResponseWithoutBody);
   }
 }
