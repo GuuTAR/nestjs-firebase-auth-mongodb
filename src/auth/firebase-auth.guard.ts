@@ -5,8 +5,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
+
 import type { Request } from 'express'
 import { Auth, DecodedIdToken } from 'firebase-admin/auth'
+
 import { FIREBASE_AUTH } from '@/firebase/firebase.module.js'
 
 export type AuthenticatedRequest = Request & { user: DecodedIdToken }

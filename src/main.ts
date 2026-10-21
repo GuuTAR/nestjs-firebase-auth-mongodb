@@ -1,6 +1,9 @@
+// Must stay first: loads .env before any module reads process.env.
 import '@/env.js'
+
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+
 import { AppModule, ObserveInstrument } from '@/app.module.js'
 
 async function bootstrap() {
