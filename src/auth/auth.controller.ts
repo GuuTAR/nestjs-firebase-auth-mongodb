@@ -40,7 +40,7 @@ export class AuthController {
     description:
       'Exchanges email + password for a Firebase ID token.\nUse the returned value as: Authorization: Bearer <token>',
   })
-  @ResponseMessage('Signed in successfully')
+  @ResponseMessage('Success')
   @ApiOkResponseOf(AuthSignInResponse)
   @ApiErrorResponses(
     { status: 400, description: 'Bad Request' },
