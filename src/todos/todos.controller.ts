@@ -18,9 +18,9 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+
 import type { DecodedIdToken } from 'firebase-admin/auth';
-import { CurrentUser } from '@/auth/current-user.decorator.js';
-import { FirebaseAuthGuard } from '@/auth/firebase-auth.guard.js';
+
 import {
   ApiCreatedResponseOf,
   ApiErrorResponses,
@@ -30,6 +30,10 @@ import {
 import { HttpExceptionFilter } from '@/common/http-exception.filter.js';
 import { ResponseMessage } from '@/common/response-message.decorator.js';
 import { ResponseInterceptor } from '@/common/response.interceptor.js';
+
+import { CurrentUser } from '@/auth/current-user.decorator.js';
+import { FirebaseAuthGuard } from '@/auth/firebase-auth.guard.js';
+
 import { TodoCreateRequest } from '@/todos/dto/create-todo.dto.js';
 import { Todo } from '@/todos/todo.model.js';
 import { TodosService } from '@/todos/todos.service.js';

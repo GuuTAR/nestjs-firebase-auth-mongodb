@@ -12,7 +12,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import type { DecodedIdToken } from 'firebase-admin/auth';
+
 import {
   ApiErrorResponses,
   ApiOkResponseOf,
@@ -20,6 +22,7 @@ import {
 import { HttpExceptionFilter } from '@/common/http-exception.filter.js';
 import { ResponseMessage } from '@/common/response-message.decorator.js';
 import { ResponseInterceptor } from '@/common/response.interceptor.js';
+
 import { AuthMeResponse, AuthSignInResponse } from '@/auth/auth.model.js';
 import { AuthService } from '@/auth/auth.service.js';
 import { CurrentUser } from '@/auth/current-user.decorator.js';

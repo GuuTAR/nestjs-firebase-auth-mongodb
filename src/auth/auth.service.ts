@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { AuthSignInResponse } from '@/auth/auth.model.js';
 
 const INVALID_CREDENTIALS = new Set([

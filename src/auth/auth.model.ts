@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import type { DecodedIdToken } from 'firebase-admin/auth';
 
 export class AuthSignInResponse {

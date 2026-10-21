@@ -1,5 +1,6 @@
 import { applyDecorators, HttpStatus, Type } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
+
 import { Response, ResponseWithoutBody } from '@/common/response.model.js';
 
 /** Documents a response as `Response` with `body` set to `model` (or `[model]` for an array). */
