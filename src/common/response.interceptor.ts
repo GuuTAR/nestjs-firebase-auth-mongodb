@@ -12,7 +12,7 @@ import { RESPONSE_MESSAGE } from './response-message.decorator.js';
 import { Response } from './response.model.js';
 
 /**
- * Wraps handler results in the `{ message, body }` envelope. `message` comes
+ * Wraps handler results in the `{ code, message, body }` envelope. `message` comes
  * from `@ResponseMessage()`, falling back to the HTTP status text.
  */
 @Injectable()
@@ -30,6 +30,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     );
     return next.handle().pipe(
       map((body) => ({
+        code: res.statusCode,
         message: message ?? STATUS_CODES[res.statusCode] ?? 'OK',
         body,
       })),

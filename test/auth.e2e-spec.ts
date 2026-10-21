@@ -38,6 +38,8 @@ describe('AuthController (e2e)', () => {
           idToken: 'id',
           refreshToken: 'refresh',
           expiresIn: '3600',
+          localId: 'user-1',
+          email: 'a@b.com',
         }),
       );
 
@@ -46,8 +48,14 @@ describe('AuthController (e2e)', () => {
         .send({ email: 'a@b.com', password: 'secret' })
         .expect(200)
         .expect({
-          message: 'Signed in successfully',
-          body: { idToken: 'id', refreshToken: 'refresh', expiresIn: 3600 },
+          code: 200,
+          message: 'Success',
+          body: {
+            token: 'id',
+            expires_in: 3600,
+            uid: 'user-1',
+            email: 'a@b.com',
+          },
         });
     });
 
@@ -56,7 +64,7 @@ describe('AuthController (e2e)', () => {
         .post('/api/v1/auth/signin')
         .send({ email: 'not-an-email' })
         .expect(400);
-      expect(res.body).toHaveProperty('message');
+      expect(res.body).toEqual({ code: 400, message: expect.any(String) });
       expect(res.body).not.toHaveProperty('body');
       expect(fetchMock).not.toHaveBeenCalled();
     });
@@ -73,7 +81,7 @@ describe('AuthController (e2e)', () => {
         .post('/api/v1/auth/signin')
         .send({ email: 'a@b.com', password: 'wrong' })
         .expect(401)
-        .expect({ message: 'Invalid email or password' });
+        .expect({ code: 401, message: 'Invalid email or password' });
     });
 
     it('returns 500 for unexpected Firebase errors', async () => {
@@ -89,6 +97,7 @@ describe('AuthController (e2e)', () => {
         .send({ email: 'a@b.com', password: 'secret' })
         .expect(500);
       expect(res.body).toEqual({
+        code: 500,
         message: 'Firebase sign-in failed: TOO_MANY_ATTEMPTS_TRY_LATER',
       });
     });
@@ -104,6 +113,7 @@ describe('AuthController (e2e)', () => {
         .set('Authorization', 'Bearer good-token')
         .expect(200)
         .expect({
+          code: 200,
           message: 'User retrieved successfully',
           body: { uid: 'user-1', claims },
         });
@@ -114,7 +124,7 @@ describe('AuthController (e2e)', () => {
       return request(app.getHttpServer())
         .get('/api/v1/auth/me')
         .expect(401)
-        .expect({ message: 'Missing bearer token' });
+        .expect({ code: 401, message: 'Missing bearer token' });
     });
 
     it('returns 401 for an invalid token', () => {
@@ -124,7 +134,7 @@ describe('AuthController (e2e)', () => {
         .get('/api/v1/auth/me')
         .set('Authorization', 'Bearer bad-token')
         .expect(401)
-        .expect({ message: 'Invalid or expired token' });
+        .expect({ code: 401, message: 'Invalid or expired token' });
     });
   });
 });

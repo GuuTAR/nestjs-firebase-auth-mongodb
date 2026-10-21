@@ -46,7 +46,7 @@ describe('TodosController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/api/v1/todos')
       .expect(401)
-      .expect({ message: 'Missing bearer token' });
+      .expect({ code: 401, message: 'Missing bearer token' });
   });
 
   it('POST /api/v1/todos creates a todo', async () => {
@@ -57,6 +57,7 @@ describe('TodosController (e2e)', () => {
       .expect(201);
 
     expect(res.body).toEqual({
+      code: 201,
       message: 'Todo created successfully',
       body: {
         id: expect.stringMatching(/^[0-9a-f]{24}$/),
@@ -74,7 +75,7 @@ describe('TodosController (e2e)', () => {
       .set(asUser('user-1'))
       .send({})
       .expect(400);
-    expect(res.body).toEqual({ message: expect.any(String) });
+    expect(res.body).toEqual({ code: 400, message: expect.any(String) });
   });
 
   it('GET /api/v1/todos lists only the caller’s todos, newest first', async () => {
@@ -87,7 +88,10 @@ describe('TodosController (e2e)', () => {
       .set(asUser('user-1'))
       .expect(200);
 
-    expect(res.body.message).toBe('Todos retrieved successfully');
+    expect(res.body).toMatchObject({
+      code: 200,
+      message: 'Todos retrieved successfully',
+    });
     expect(res.body.body.map((t: { title: string }) => t.title)).toEqual([
       'Second',
       'First',
@@ -102,7 +106,10 @@ describe('TodosController (e2e)', () => {
       .patch(`/api/v1/todos-toggle/${id}`)
       .set(asUser('user-1'))
       .expect(200);
-    expect(first.body.message).toBe('Todo toggled successfully');
+    expect(first.body).toMatchObject({
+      code: 200,
+      message: 'Todo toggled successfully',
+    });
     expect(first.body.body).toMatchObject({ id, is_completed: true });
     expect(first.body.body.created_at).toBe(created.created_at);
     expect(first.body.body.updated_at > created.updated_at).toBe(true);
@@ -125,7 +132,7 @@ describe('TodosController (e2e)', () => {
       .patch(`/api/v1/todos-toggle/${id}`)
       .set(asUser('user-2'))
       .expect(404)
-      .expect({ message: 'Todo not found' });
+      .expect({ code: 404, message: 'Todo not found' });
   });
 
   it('PATCH /api/v1/todos-reset marks only the caller’s todos not completed', async () => {
@@ -145,7 +152,7 @@ describe('TodosController (e2e)', () => {
       .patch('/api/v1/todos-reset')
       .set(asUser('user-1'))
       .expect(200)
-      .expect({ message: 'Todos reset successfully' });
+      .expect({ code: 200, message: 'Todos reset successfully' });
 
     const list = async (uid: string) =>
       (await request(app.getHttpServer()).get('/api/v1/todos').set(asUser(uid)))
@@ -165,11 +172,11 @@ describe('TodosController (e2e)', () => {
       .delete(`/api/v1/todos/${id}`)
       .set(asUser('user-1'))
       .expect(200)
-      .expect({ message: 'Todo deleted successfully' });
+      .expect({ code: 200, message: 'Todo deleted successfully' });
     await request(app.getHttpServer())
       .delete(`/api/v1/todos/${id}`)
       .set(asUser('user-1'))
       .expect(404)
-      .expect({ message: 'Todo not found' });
+      .expect({ code: 404, message: 'Todo not found' });
   });
 });

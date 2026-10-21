@@ -16,8 +16,9 @@ const BAD_REQUEST = new Set(['INVALID_EMAIL', 'MISSING_PASSWORD']);
 
 interface SignInWithPasswordResult {
   idToken: string;
-  refreshToken: string;
   expiresIn: string;
+  localId: string;
+  email: string;
 }
 
 @Injectable()
@@ -53,9 +54,13 @@ export class AuthService {
       );
     }
 
-    const { idToken, refreshToken, expiresIn } =
-      data as SignInWithPasswordResult;
-    return { idToken, refreshToken, expiresIn: Number(expiresIn) };
+    const result = data as SignInWithPasswordResult;
+    return {
+      token: result.idToken,
+      expires_in: Number(result.expiresIn),
+      uid: result.localId,
+      email: result.email,
+    };
   }
 
   private identityToolkitUrl(): string {
